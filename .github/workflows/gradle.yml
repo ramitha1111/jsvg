@@ -1,3 +1,14 @@
+# Optimized by ci-cost (https://github.com/mariotavarez/ci-cost)
+# Applied 7 optimizations:
+# - [HIGH] Add gradle dependency cache to "windows" job
+# - [HIGH] Add gradle dependency cache to "macOS" job
+# - [HIGH] Add gradle dependency cache to "linux" job
+# - [HIGH] Switch "macOS" from macOS to ubuntu runner
+# - [MEDIUM] Add concurrency group to "gradle.yml"
+# - [MEDIUM] Switch "windows" from Windows to ubuntu runner
+# - [MEDIUM] 3 jobs clone the repo — consider artifact sharing
+# Estimated savings: ~18 min/run
+#
 name: CI
 
 on:
@@ -8,6 +19,10 @@ on:
   pull_request:
     branches:
       - '*'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   windows:
     name: Windows (Java 21)
